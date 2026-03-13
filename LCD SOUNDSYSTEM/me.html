@@ -1,0 +1,754 @@
+<!DOCTYPE HTML>
+
+<head>
+
+	<title> well, mr. toeknuckle, </title>
+	<script type="text/javascript">
+		(function titleScroller(text) {
+   		document.title = text;
+  	 	setTimeout(function () {
+        titleScroller(text.substr(1) + text.substr(0, 1));
+    	}, 500);
+		}( document.title + " - " ));
+	</script>
+	
+		<meta charset="UTF-8">
+	
+		<link rel="stylesheet" href="https://unpkg.com/7.css/dist/7.scoped.css">
+		<link rel="stylesheet" href="me.css">
+		<link rel="icon" type="image/x-icon" href="https://i.postimg.cc/ydTw3k2y/imacs.webp">
+		
+	<script type="text/javascript">
+		// <![CDATA[
+		var speed=100; // speed of wobbling, lower is faster
+		var height=3; // height of wobbling in pixels
+		var alink="http://www.mf2fm.com/rv"; // page to link text to (set to ="" for no link)
+
+		/****************************
+		*    Wobbly Text Effect     *
+		*(c) 2003-6 mf2fm web-design*
+		*  http://www.mf2fm.com/rv  *
+		* DON'T EDIT BELOW THIS BOX *
+		****************************/
+		
+		var wobtxt, wobble, wobcnt=0;
+		window.onload=function() { if (document.getElementById) {
+ 		var i, wobli;
+  		wobble=document.getElementById("wobble");
+  		wobtxt=wobble.firstChild.nodeValue;
+  		while (wobble.childNodes.length) wobble.removeChild(wobble.childNodes[0]);
+  		for (i=0; i<wobtxt.length; i++) {
+    		wobli=document.createElement("span");
+    		wobli.setAttribute("id", "wobb"+i);
+    		wobli.style.position="relative";
+    		wobli.appendChild(document.createTextNode(wobtxt.charAt(i)));
+    		if (alink) {
+      		wobli.style.cursor="pointer";
+      		wobli.onclick=function() { top.location.href=alink; }
+    		}
+    		wobble.appendChild(wobli);
+  		}
+  		setInterval("wobbler()", speed);
+		}}
+
+		function wobbler() {
+  		for (var i=0; i<wobtxt.length; i++) document.getElementById("wobb"+i).style.top=Math.round(height*Math.sin(i+wobcnt))+"px"
+  		wobcnt++;
+		}
+		// ]]>
+	</script>
+	<script type="text/javascript">
+		// <![CDATA[
+		var colour="white"; // in addition to "random" can be set to any valid colour eg "#f0f" or "red"
+		var sparkles=100;
+
+		/****************************
+		*  Tinkerbell Magic Sparkle *
+		*(c)2005-13 mf2fm web-design*
+		*  http://www.mf2fm.com/rv  *
+		* DON'T EDIT BELOW THIS BOX *
+		****************************/
+
+		var x=ox=400;
+		var y=oy=300;
+		var swide=800;
+		var shigh=600;
+		var sleft=sdown=0;
+		var tiny=new Array();
+		var star=new Array();
+		var starv=new Array();
+		var starx=new Array();
+		var stary=new Array();
+		var tinyx=new Array();
+		var tinyy=new Array();
+		var tinyv=new Array();
+
+		window.onload=function() { if (document.getElementById) {
+		  var i, rats, rlef, rdow;
+		  for (var i=0; i<sparkles; i++) {
+		    var rats=createDiv(3, 3);
+		    rats.style.visibility="hidden";
+		    rats.style.zIndex="999";
+    		document.body.appendChild(tiny[i]=rats);
+    		starv[i]=0;
+    		tinyv[i]=0;
+    		var rats=createDiv(5, 5);
+    		rats.style.backgroundColor="transparent";
+    		rats.style.visibility="hidden";
+    		rats.style.zIndex="999";
+    		var rlef=createDiv(1, 5);
+    		var rdow=createDiv(5, 1);
+    		rats.appendChild(rlef);
+    		rats.appendChild(rdow);
+    		rlef.style.top="2px";
+    		rlef.style.left="0px";
+    		rdow.style.top="0px";
+    		rdow.style.left="2px";
+    		document.body.appendChild(star[i]=rats);
+  		}
+  		set_width();
+  		sparkle();
+		}}
+
+		function sparkle() {
+  		var c;
+  		if (Math.abs(x-ox)>1 || Math.abs(y-oy)>1) {
+   		 ox=x;
+   		 oy=y;
+   		 for (c=0; c<sparkles; c++) if (!starv[c]) {
+      		star[c].style.left=(starx[c]=x)+"px";
+      		star[c].style.top=(stary[c]=y+1)+"px";
+      		star[c].style.clip="rect(0px, 5px, 5px, 0px)";
+      		star[c].childNodes[0].style.backgroundColor=star[c].childNodes[1].style.backgroundColor=(colour=="random")?newColour():colour;
+      		star[c].style.visibility="visible";
+      		starv[c]=50;
+      		break;
+    		}
+ 		 }
+  		for (c=0; c<sparkles; c++) {
+    		if (starv[c]) update_star(c);
+    		if (tinyv[c]) update_tiny(c);
+  		}
+  		setTimeout("sparkle()", 40);
+		}
+
+		function update_star(i) {
+  		if (--starv[i]==25) star[i].style.clip="rect(1px, 4px, 4px, 1px)";
+  		if (starv[i]) {
+		    stary[i]+=1+Math.random()*3;
+		    starx[i]+=(i%5-2)/5;
+		    if (stary[i]<shigh+sdown) {
+		      star[i].style.top=stary[i]+"px";
+		      star[i].style.left=starx[i]+"px";
+		    }
+		    else {
+		      star[i].style.visibility="hidden";
+		      starv[i]=0;
+		      return;
+		    }
+		  }
+		  else {
+		    tinyv[i]=50;
+		    tiny[i].style.top=(tinyy[i]=stary[i])+"px";
+		    tiny[i].style.left=(tinyx[i]=starx[i])+"px";
+		    tiny[i].style.width="2px";
+		    tiny[i].style.height="2px";
+		    tiny[i].style.backgroundColor=star[i].childNodes[0].style.backgroundColor;
+		    star[i].style.visibility="hidden";
+		    tiny[i].style.visibility="visible"
+		  }
+		}
+
+		function update_tiny(i) {
+		  if (--tinyv[i]==25) {
+		    tiny[i].style.width="1px";
+		    tiny[i].style.height="1px";
+		      }
+  		if (tinyv[i]) {
+    		tinyy[i]+=1+Math.random()*3;
+    		tinyx[i]+=(i%5-2)/5;
+    		if (tinyy[i]<shigh+sdown) {
+      		tiny[i].style.top=tinyy[i]+"px";
+      		tiny[i].style.left=tinyx[i]+"px";
+    		}
+    		else {
+      		tiny[i].style.visibility="hidden";
+      		tinyv[i]=0;
+      		return;
+    		}
+  		}
+  		else tiny[i].style.visibility="hidden";
+		}
+
+		document.onmousemove=mouse;
+		function mouse(e) {
+  		if (e) {
+    		y=e.pageY;
+    	x=e.pageX;
+  		}
+  		else {
+    		set_scroll();
+    		y=event.y+sdown;
+    		x=event.x+sleft;
+  		}
+		}
+
+		window.onscroll=set_scroll;
+		function set_scroll() {
+  		if (typeof(self.pageYOffset)=='number') {
+    		sdown=self.pageYOffset;
+    		sleft=self.pageXOffset;
+  		}
+  		else if (document.body && (document.body.scrollTop || document.body.scrollLeft)) {
+    		sdown=document.body.scrollTop;
+    		sleft=document.body.scrollLeft;
+  		}
+		  else if (document.documentElement && (document.documentElement.scrollTop || document.documentElement.scrollLeft)) {
+		    sleft=document.documentElement.scrollLeft;
+		    sdown=document.documentElement.scrollTop;
+		  }
+		  else {
+		    sdown=0;
+		    sleft=0;
+ 		 }
+		}
+
+		window.onresize=set_width;
+		function set_width() {
+  		var sw_min=999999;
+  		var sh_min=999999;
+  		if (document.documentElement && document.documentElement.clientWidth) {
+    		if (document.documentElement.clientWidth>0) sw_min=document.documentElement.clientWidth;
+    		if (document.documentElement.clientHeight>0) sh_min=document.documentElement.clientHeight;
+  		}
+  		if (typeof(self.innerWidth)=='number' && self.innerWidth) {
+    		if (self.innerWidth>0 && self.innerWidth<sw_min) sw_min=self.innerWidth;
+    		if (self.innerHeight>0 && self.innerHeight<sh_min) sh_min=self.innerHeight;
+  		}
+  		if (document.body.clientWidth) {
+    		if (document.body.clientWidth>0 && document.body.clientWidth<sw_min) sw_min=document.body.clientWidth;
+    		if (document.body.clientHeight>0 && document.body.clientHeight<sh_min) sh_min=document.body.clientHeight;
+  		}
+  		if (sw_min==999999 || sh_min==999999) {
+    		sw_min=800;
+    		sh_min=600;
+  		}
+  		swide=sw_min;
+  		shigh=sh_min;
+		}
+
+		function createDiv(height, width) {
+  		var div=document.createElement("div");
+  		div.style.position="absolute";
+ 		 div.style.height=height+"px";
+ 		 div.style.width=width+"px";
+ 		 div.style.overflow="hidden";
+ 		 return (div);
+		}
+
+		function newColour() {
+  		var c=new Array();
+  		c[0]=255;
+  		c[1]=Math.floor(Math.random()*256);
+  		c[2]=Math.floor(Math.random()*(256-c[1]/2));
+  		c.sort(function(){return (0.5 - Math.random());});
+  		return ("rgb("+c[0]+", "+c[1]+", "+c[2]+")");
+		}
+		// ]]>
+	</script>
+	
+</head>
+
+<body>
+	
+	<div class="lighter">
+	<div class="win7">
+	
+		<img src="https://i.postimg.cc/kM0FV80Q/fiji-cigarettes.png" height="300px">
+		
+		<div class="window glass active"
+			 style="background-attachment: local;
+			 		width: 300px;
+			 		--w7-w-bg: #de83a6;">
+		
+			<div class="title-bar">
+				
+				<div class="title-bar-text">
+				get ready, i'm gonna touch you
+				</div>
+				<div class="title-bar-controls">
+					<button aria-label="Close"></button>
+				</div>
+				
+			</div>
+			
+			<div class="window-body has-space">
+			
+			<center>
+			
+				<marquee>
+				 
+				my house. this is my house.
+				you are in my home. my name
+				is <b>LCD</b>.
+				
+				</marquee>
+				
+				<img src="https://i.postimg.cc/hGT2jsj7/world.gif" height="20px">
+				<img src="https://i.postimg.cc/Y0qT6tHK/Flowerdripdrops.gif" height="20px">
+				<img src="https://i.postimg.cc/0y6WgP1n/spinningcd.gif" height="20px">
+				
+			</center>
+			
+			<a href="home.html">
+			<button class="default"> i see </button>
+			</a>
+			<button> what </button>
+			</div>
+			
+		</div>
+	
+	</div>
+	</div>
+	
+	<div class="junk">
+		<img src="https://i.postimg.cc/zG5FFcCz/nosmoke-banner.gif" width="250px">
+		<img src="https://i.postimg.cc/FKpWSQwX/netscape-banner.gif" width="250px">
+		<img src="https://i.postimg.cc/nVNJrvvY/skeleanimals-banner.jpg" width="250px">
+		<img src="https://i.postimg.cc/6pd19Z03/casinomidnight-banner.gif" width="250px">
+		<img src="https://i.postimg.cc/KjkJC3jm/pcfree-banner.gif" width="250px">
+		<img src="https://i.postimg.cc/xjygSkPy/rkayda-ad.gif" width="250px">
+		<img src="https://i.postimg.cc/3NBZj6wb/simshottub-banner.gif" width="250px">
+	</div>
+	
+	
+	<div class="strikes">
+	<div class="win7">
+	
+		<div class="window glass active"
+			 style="--w7-w-bg: aqua;
+			 		background-attachment: local;
+			 		width: 800px;">
+			
+			<div class="title-bar">
+				
+				<div class="title-bar-text">
+				who am i again?
+				</div>
+				<div class="title-bar-controls">
+					<button aria-label="Minimize"></button>
+					<button aria-label="Close"></button>
+				</div>
+			
+			</div>
+			<div class="window-body has-space"
+				 style="padding: 20px;">
+			
+				<marquee style="font-size: 30px;
+								width: 750px;"
+						 scrollamount="20">
+					AGAIN I ASK YOU WHAT THE HELL YOU'RE DOING IN MY HOUSE
+				</marquee>
+				
+				<div class="smokes">
+					<div id="cig1">
+					
+						<img src="https://i.postimg.cc/2SWqKMMB/lotus.png" height="200px">
+					
+						<span id="wobble"
+							  style="font-size: 20px;">
+							  
+							  the lotus eater
+							  
+						</span>
+						
+						<br/>
+						<br/>
+						
+						<div class="has-scrollbar descript">
+						
+							<img src="https://i.postimg.cc/jjrs3y84/keyboardrot.gif" height="15px">
+							<img src="https://i.postimg.cc/j2MpcbGf/weed.gif" height="15px">
+							<img src="https://i.postimg.cc/MHykQLwk/pinkstar3d.gif" height="15px">
+							
+							<br/>
+							
+							hi there. <br/>
+							I am the LCD SOUNDSYSTEM. also known as SAMMY, PETER
+							or CADAZIO, VIVICA, or LOTUS-WHITMAN, I'm a pervert on
+							the west coast. i'm also a radio DJ, merchandise
+							artist, booking agent.... and so on~
+							
+						</div>
+						
+						<img src="https://i.postimg.cc/G3yXfBX7/babygirl.gif" height="20px;">
+						<img src="https://i.postimg.cc/NMydBLB0/alien.gif" height="20px">
+						<img src="https://i.postimg.cc/LsJtZ77C/spaceenjoyer.gif" height="20px">
+						<img src="https://i.postimg.cc/VNhFG1nP/juicy.gif" height="20px">
+						<img src="https://i.postimg.cc/MH2mwD9s/narcissistic.gif" height="20px">
+						<img src="https://i.postimg.cc/RVxgxM8M/aroace.gif" height="20px">
+						<img src="https://i.postimg.cc/g2kqGrKP/peace.gif" height="20px">
+						<img src="https://i.postimg.cc/XJF9s5n9/weird.gif" height="20px">
+						<img src="https://i.postimg.cc/Cxm78bK1/indie.gif" height="20px">
+						<img src="https://i.postimg.cc/mkCV1qcf/chick.gif" height="20px">
+						<img src="" height="15px">
+					
+					</div>
+					
+					<div id="cig2">
+					
+						<p>
+
+							hi. as previously stated, i am LCD, blah blah blah, i have a 
+							<a href="https://en.pronouns.page/u/adrienbrody"
+							   class="lotus-link">
+							   pronouns-page
+							</a>
+							for more on that.  
+							
+							<img src="https://i.postimg.cc/vZ6kLPpB/smileyfaces.gif" height="10px">
+							
+							hailing all the way from the middle of nowhere, sent hurtling
+							towards houston, bounced, landed in <b>seattle</b> and rolled
+							up and into mount saint helens, never to be seen again.
+							
+							
+						</p>
+							
+							<span
+							 style="justify-self: center;">
+							<img src="https://i.postimg.cc/x10KBp66/alien-divider.png"
+								 margin="0"
+								 width="200">
+							<img src="https://i.postimg.cc/x10KBp66/alien-divider.png"
+								 margin="0"
+								 width="200;">
+							</span>
+						
+						<p>	
+						
+							as it stands, in our un-airconned two-bedroom apartment inside
+							of st. helens, we work for a radio station that remains to be named
+							(it has one, but you don't need to know that,)... I'm a business
+							major but don't let that fool you. i don't play about this socialist
+							shit!!  as i'm writing this i can't say i have the energy to detail
+							my political beliefs, but maybe you can find some <a href="">abstractual
+							spirit ramblings from a drifting shaman</a> about it. my privilege card
+							reads <b>neurologically and physically disabled/mentally ill/traumatised/
+							brain damaged, indigenous, black, transgender;</b> i've gotten sick of this
+							bit, but you get my point, fuck off.
+
+
+						</p>
+						
+							<div role="tooltip"
+							 	 style="margin-top: 20px;
+							 			width: 340px;">
+								
+								it's another year. that radio station's still our family, stress and all.
+							
+							</div>
+						
+							<div role="tooltip" 
+							 	class="is-top is-left"
+								 style="margin-top: 20px;
+								 		margin-bottom: 20px;
+							 			width: 340px;
+							 			justify-self: right;">
+						
+						"and another to take it back" (02/14/2026)
+						<img src="https://i.postimg.cc/MHykQLwk/pinkstar3d.gif" height="10px">
+							
+							</div>
+							
+						<p>
+						
+						i have many <b>hobbies</b> and <i>interests</i> and things.
+						i like to draw, write, play terraria, listen to music, collect
+						graphics, mod electronics, watch shitty horror youtube icebergs
+						& 4chan / reddit stories, uh... smoke, drink, do drugs...
+						
+						you know. <img src="https://i.postimg.cc/XNx64fpv/bong.gif" height="10px">
+												
+						</p>
+						
+						<p>
+						
+						this is a work in progress brother
+																		
+						</p>
+										
+					</div>
+				</div>
+			
+			</div>
+		</div>
+		
+		<div class="loose">
+		<div role="tooltip">
+  			
+  			<img
+  				 src="https://i.postimg.cc/Hn5mrW9p/player.png"
+  				 height="25px"
+  				 style="margin: 0px;">
+  				 
+  			<span> listen to the dismemberment plan! now! </span>
+		
+		</div>
+		</div>
+	
+	</div>
+	</div>
+
+		
+	<div class="ps4">
+	
+		<div id="sims1">
+		<div class="win7">
+		
+		<div class="window glass active"
+			 style="background-attachment: local;
+			 		width: 350px;
+			 		overflow: auto;
+			 		--w7-w-bg: pink;">
+			 		
+			<div class="title-bar">
+				<div class="title-bar-text">
+					General
+				</div>
+				<div class="title-bar-controls">
+					<button aria-label="Help"> </button>
+					<button aria-label="Minimize"> </button>
+					<button aria-label="Close"> </button>
+				</div>
+			</div>
+			<div class="window-body has-space has-scrollbar sim">
+			
+				<h4> special interests </h4>
+				
+				<span>
+				
+				the internet music fanfiction and fandom
+				horror my own OCs writing adult swim media
+				cartoons and <i> many many more. </i>
+				
+					<br/>
+					<img src="https://i.postimg.cc/hP5ffB8Z/gumi.png" height="20px">
+					<img src="https://i.postimg.cc/GmT9D5qL/miffy.png" height="20px">
+					<img src="https://i.postimg.cc/hPfGFYFL/w.png" height="20px">
+					<br/>
+				
+				</span>
+			
+				<span>
+				
+					<b> i like </b> <br/>
+					psychology botany sociology business communications <br/>
+					literature anatomy philosophy marketing advertising
+					
+				</span>
+					
+					<br/>
+					<img src="https://i.postimg.cc/sXm2ydDc/miifan.png" height="15px">
+					<img src="https://i.postimg.cc/hv4f7436/DUDE.jpg" height="15px">
+					<img src="https://i.postimg.cc/8kyC0SYk/star-stamp.png" height="15px">
+					<br/>
+				
+				<span>
+				
+					<b> and </b>
+					queer history fandom history fanfiction shipping discourse
+					internet mysteries true crime horror creepypasta the 90s
+					2000s and 2010s old technology
+				
+				</span>
+			
+			</div>
+		</div>
+		
+		</div>
+		</div>
+		
+		
+		<div id="sims2">
+		<div class="win7">
+		
+		<div class="window glass active"
+			 style="background-attachment: local;
+			 		width: 350px;
+			 		--w7-w-bg: aqua;">
+			 		
+			<div class="title-bar">
+				<div class="title-bar-text">
+					Music
+				</div>
+				<div class="title-bar-controls">
+					<button aria-label="Minimize"> </button>
+					<button aria-label="Maximize"> </button>
+					<button aria-label="Close"> </button>
+				</div>
+			</div>
+			<div class="window-body has-space has-scrollbar sim"
+				 style="overflow: auto;">
+			
+				<h4> i do listen to music </h4>
+				
+				<span>
+				
+				<b> i like </b>
+				<b>japanese math rock</b> surf punk <b>indie garage rock</b> grunge nu-metal
+				<b>90s - 10s indie rock</b> dance punk <i>the occasional hardcore punk</i>
+				american math rock & midwest emo post-rock <i>uhhhhhhhhhhh</i>
+				
+				
+				</span>
+				
+					<br/>
+					<img src="https://i.postimg.cc/1zbNjN3Q/saturdaynightwrist.png" height="25px">
+					<img src="https://i.postimg.cc/ZY8ywnkG/thenewabnormal.png" height="25px">
+					<img src="https://i.postimg.cc/jj1zYFvB/inrainbows.png" height="25px">
+					<br/>
+				
+				<span>
+				
+				<b>such as</b>
+				wozniak toe tricot <b>vundabar</b> the strokes system of a down zookraught the dismemberment plan
+				mitsubishi suicide girlfriends <b>horse lords</b> interpol the strokes interpol vundabar nirvana
+				foo fighters radiohead <i>have i mentioned</i> <b>interpol</b> deftones the buttertones hot flash
+				heat wave together pangea <u>and MANY many more.  but i am lazy.</u>
+				
+				
+				</span>
+				
+				<br/>
+				<br/>
+				
+				<span>
+				
+				<b> and also </b>
+				<b>electronica</b> ambient <b>breakcore</b> IDM  jungle EDM/Dance
+				<b>electropop</b> hyperpop trance speedcore and ummmmm
+				
+				</span>
+				
+					<br/>
+					<img src="https://i.postimg.cc/yYK0K9X6/lcdsoundsystem.png" height="25px">
+					<img src="https://i.postimg.cc/YqbztHNy/aphextwin.png" height="25px">
+					<img src="https://i.postimg.cc/PrbzvKr8/goreshit2.png" height="25px">
+					<br/>
+				
+				<span>
+				
+				<b>such as</b>
+				<b>aphex twin</b> <b>nero's day at disneyland</b> dev/null u-ziq <b>LCD soundsystem</b> kmfdm infected mushroom
+				<b>imogen heap</b> studio killers machine girl goreshit <b>loli in early 20s</b> metaroom
+				4lung memo boy <b>lauren bousfield</b>
+				
+				
+				</span>
+			
+			</div>
+		</div>
+		
+		</div>
+		</div>
+		
+	</div>
+	
+	<div class="ps3">
+		
+		<div id="sims3">
+		<div class="win7">
+		
+		<div class="window glass active"
+			 style="width: 350px;
+			 		--w7-w-bg: yellow;">
+			 		
+			<div class="title-bar">
+				<div class="title-bar-text">
+				People
+				</div>
+				<div class="title-bar-controls">
+					<button aria-label="Minimize"> </button>
+					<button aria-label="Maximize"> </button>
+					<button aria-label="Close"> </button>
+				</div>
+			</div>
+			<div class="window-body has-space has-scrollbar sim"
+				 style="overflow: auto;">
+			
+				<h4> i got the 'people' autism </h4>
+				
+				<span>
+				
+				<b> i like </b>
+				<b>comedians</b> youtubers <b>actors</b> musicians and voice actors
+				</span>
+				
+					<br/>
+					<img src="https://i.postimg.cc/LXq3qpnH/familyguy.gif" height="25px">
+					<img src="https://i.postimg.cc/d055k669/bloodeater.png" height="25px">
+					<img src="https://i.postimg.cc/Ss8zFNnz/questions.gif" height="25px">
+					<br/>
+				
+				<span>
+				
+				<b>such as</b>
+				seth meyers bill hader will forte john oliver brian david gilbert
+				worthikids ego nwodim strange aeons seth rogen cynthia erivo hunter schafer
+				justice smith hugh grant fletcher & wyatt shears tina fey amy poehler
+				jane krakowski <i>and more i will list eventually</i>
+				
+				<br/>
+				<br/>
+				
+				<b>and <i>these ones</i> are special to me</b>
+				john mulaney <i>regrettably</i>	adrien brody pete davidson nexpo natasha lyonne
+				brandon hagen <i> also </i> regrettably ben stiller
+				
+				</span>
+			
+			</div>
+		</div>
+		
+		</div>
+		</div>
+		
+		
+		<div id="sims4">
+		<div class="win7">
+		
+				<div class="window glass active"
+			 style="background-attachment: local;
+			 		width: 350px;
+			 		--w7-w-bg: purple;">
+			 		
+			<div class="title-bar">
+				<div class="title-bar-text">
+				Movies and TV
+				</div>
+				<div class="title-bar-controls">
+					<button aria-label="Minimize"> </button>
+					<button aria-label="Maximize"> </button>
+					<button aria-label="Close"> </button>
+				</div>
+			</div>
+			<div class="window-body has-space has-scrollbar sim">
+			
+			</div>
+		</div>
+		
+		</div>
+		</div>
+
+	</div>
+
+	<div class="LCD-image">
+	
+		<img src="https://i.postimg.cc/8CBT2s9Q/moon.gif" height="200px">
+
+	</div>
+	
+</div>
+
+</body>
