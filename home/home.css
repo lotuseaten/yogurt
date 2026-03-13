@@ -1,0 +1,12 @@
+.win7 {
+-webkit-font-smoothing: none;
+}
+
+body {
+-webkit-font-smoothing: none;
+font-family: 'Arial';
+background-image: url(https://i.postimg.cc/4dgDSkx2/bg.gif);
+background-size: cover;
+display: grid;
+place-items: center;
+}
