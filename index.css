@@ -39,3 +39,8 @@ body {
 	justify-self: center;
 	place-self: center;
 }
+
+.claims {
+	font-size: 40;
+	color: white;
+}
